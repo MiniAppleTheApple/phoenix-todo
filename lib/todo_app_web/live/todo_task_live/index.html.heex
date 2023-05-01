@@ -1,0 +1,32 @@
+<h1 class="text-6xl font-bold">Todo App</h1>
+
+<div>
+
+  <%= if @live_action in [:new, :edit] do %>
+    <.modal return_to={Routes.todo_task_index_path(@socket, :index)}>
+      <.live_component
+        module={TodoAppWeb.TodoTaskLive.FormComponent}
+        id={@todo_task.id || :new}
+        title={@page_title}
+        action={@live_action}
+        todo_task={@todo_task}
+        return_to={Routes.todo_task_index_path(@socket, :index)}
+      />
+    </.modal>
+  <% end %>
+
+
+  <ul>
+  <%= for todo_task <- @tasks do %>
+    <li class="flex justify-between p-1 text-xl font-bold bg-blue-500 text-white" phx-value-id={todo_task.id} class={if todo_task.done, do: "text-red-500", else: "text-blue-500"}>
+      <span phx-click="done" class="m-auto"><%= todo_task.name %></span>
+      <section>
+        <button class="p-2 text-xl font-bold bg-red-500 text-white" phx-click="delete" phx-value-id={todo_task.id}>Delete</button>
+        <%= live_patch "Edit", to: Routes.todo_task_index_path(@socket, :edit, todo_task.id), class: "p-2 text-xl font-bold bg-yellow-500 text-white" %>
+    </section>
+    </li>
+  <% end %>
+  </ul>
+
+  <span><%= live_patch "New", to: Routes.todo_task_index_path(@socket, :new), class: "p-3 text-lg font-bold bg-green-500 text-white" %></span>
+</div>

@@ -1,0 +1,19 @@
+<div>
+  <h2 class="text-xl font-bold"><%= @title %></h2>
+
+  <.form
+    let={f}
+    for={@changeset}
+    id="todo_task-form"
+    phx-target={@myself}
+    phx-change="validate"
+    phx-submit="save">
+  
+    <%= label f, :name, class: "text-lg" %>
+    <%= text_input f, :name %>
+    <%= error_tag f, :name %>
+    <div>
+      <%= submit "Save", phx_disable_with: "Saving...", class: "p-3 text-lg font-bold bg-green-500 text-white" %>
+    </div>
+  </.form>
+</div>
